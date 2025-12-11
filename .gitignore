@@ -1,0 +1,39 @@
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+.env
+.env.*
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Streamlit secrets (keep config, ignore secrets)
+.streamlit/secrets.toml
+
+# Planner outputs (root-level)
+/*.out.csv
+/calendar*.csv
+/test_*.csv
+/week*.json
+
+# Markdown docs (ignore all except README.md)
+*.md
+!README.md

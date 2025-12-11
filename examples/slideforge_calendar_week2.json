@@ -1,0 +1,100 @@
+{
+  "week_index": 2,
+  "company_id": "slideforge",
+  "actions": [
+    {
+      "id": "789a043b-4ed8-41b2-ad1e-95f296a3410c",
+      "date": "2025-12-15",
+      "time_slot": "morning",
+      "subreddit_name": "r/startups",
+      "persona_id": "founder_advocate",
+      "post_type": "new_post",
+      "quality_score": 10.0
+    },
+    {
+      "id": "7d2c8dc0-9953-4de9-947b-daacc3b0aa2b",
+      "date": "2025-12-15",
+      "time_slot": "afternoon",
+      "subreddit_name": "r/SaaS",
+      "persona_id": "founder_advocate",
+      "post_type": "top_comment",
+      "quality_score": 8.75
+    },
+    {
+      "id": "033288f5-a72b-49c5-985e-c6c9a1b1dac7",
+      "date": "2025-12-16",
+      "time_slot": "afternoon",
+      "subreddit_name": "r/Entrepreneur",
+      "persona_id": "founder_advocate",
+      "post_type": "new_post",
+      "quality_score": 10.0
+    },
+    {
+      "id": "cac26a49-df7e-4938-99c2-0644f0b08036",
+      "date": "2025-12-16",
+      "time_slot": "evening",
+      "subreddit_name": "r/venturecapital",
+      "persona_id": "designer_neutral",
+      "post_type": "top_comment",
+      "quality_score": 8.75
+    },
+    {
+      "id": "e6f36942-73f9-455a-8cca-711014da426d",
+      "date": "2025-12-17",
+      "time_slot": "morning",
+      "subreddit_name": "r/design",
+      "persona_id": "curious_novice",
+      "post_type": "top_comment",
+      "quality_score": 8.75
+    },
+    {
+      "id": "b5bb635a-7731-4931-802c-77a52fad7547",
+      "date": "2025-12-17",
+      "time_slot": "evening",
+      "subreddit_name": "r/SaaS",
+      "persona_id": "designer_neutral",
+      "post_type": "new_post",
+      "quality_score": 10.0
+    },
+    {
+      "id": "b9eb3671-a711-461b-a470-b6dc9cb33628",
+      "date": "2025-12-18",
+      "time_slot": "morning",
+      "subreddit_name": "r/venturecapital",
+      "persona_id": "designer_neutral",
+      "post_type": "new_post",
+      "quality_score": 10.0
+    },
+    {
+      "id": "ff5b464f-a0b7-4c12-9f77-f65d4b54e3c7",
+      "date": "2025-12-19",
+      "time_slot": "afternoon",
+      "subreddit_name": "r/startups",
+      "persona_id": "curious_novice",
+      "post_type": "top_comment",
+      "quality_score": 10.0
+    },
+    {
+      "id": "6a40c237-1163-4759-b5e7-c8104480edd0",
+      "date": "2025-12-20",
+      "time_slot": "evening",
+      "subreddit_name": "r/Entrepreneur",
+      "persona_id": "curious_novice",
+      "post_type": "top_comment",
+      "quality_score": 10.0
+    },
+    {
+      "id": "b68303d3-91e3-42cf-a1eb-936610eb28b0",
+      "date": "2025-12-21",
+      "time_slot": "morning",
+      "subreddit_name": "r/design",
+      "persona_id": "founder_advocate",
+      "post_type": "top_comment",
+      "quality_score": 10.0
+    }
+  ],
+  "evaluation": {
+    "overall_score": 9.6,
+    "warnings": []
+  }
+}

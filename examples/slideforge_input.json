@@ -1,0 +1,100 @@
+{
+  "company": {
+    "id": "slideforge",
+    "name": "SlideForge",
+    "description": "AI-powered pitch deck creation tool that helps startups create investor-ready presentations in minutes instead of days",
+    "value_props": [
+      "Create pitch decks 10x faster",
+      "AI-generated content and design suggestions",
+      "Templates based on successful funded startups"
+    ],
+    "target_audiences": [
+      "Early-stage startup founders",
+      "Solo entrepreneurs"
+    ],
+    "tone": "casual",
+    "banned_topics": ["PowerPoint", "Keynote", "competitor"]
+  },
+  "personas": [
+    {
+      "id": "founder_advocate",
+      "name": "Bootstrapped founder",
+      "role": "founder",
+      "stance": "advocate",
+      "expertise_level": "intermediate",
+      "max_posts_per_week": 5
+    },
+    {
+      "id": "curious_novice",
+      "name": "First-time founder",
+      "role": "aspiring_founder",
+      "stance": "neutral",
+      "expertise_level": "novice",
+      "max_posts_per_week": 5
+    },
+    {
+      "id": "designer_neutral",
+      "name": "Freelance designer",
+      "role": "designer",
+      "stance": "neutral",
+      "expertise_level": "expert",
+      "max_posts_per_week": 4
+    }
+  ],
+  "subreddits": [
+    {
+      "name": "r/startups",
+      "category": "startup",
+      "max_posts_per_week": 3,
+      "max_posts_per_day": 1
+    },
+    {
+      "name": "r/Entrepreneur",
+      "category": "business",
+      "max_posts_per_week": 3,
+      "max_posts_per_day": 1
+    },
+    {
+      "name": "r/SaaS",
+      "category": "saas",
+      "max_posts_per_week": 2,
+      "max_posts_per_day": 1
+    },
+    {
+      "name": "r/venturecapital",
+      "category": "fundraising",
+      "max_posts_per_week": 2,
+      "max_posts_per_day": 1
+    },
+    {
+      "name": "r/design",
+      "category": "design",
+      "max_posts_per_week": 2,
+      "max_posts_per_day": 1
+    }
+  ],
+  "templates": [
+    {
+      "id": "pain_point",
+      "label": "Founder pain point",
+      "template_string": "Struggling with {topic} in {category}",
+      "target_stage": "awareness",
+      "pillars": ["problems"]
+    },
+    {
+      "id": "howto_guide",
+      "label": "How-to discussion",
+      "template_string": "How do you handle {topic} for your {category}?",
+      "target_stage": "consideration",
+      "pillars": ["howto"]
+    },
+    {
+      "id": "success_story",
+      "label": "Success sharing",
+      "template_string": "Finally figured out {topic} - here's what worked",
+      "target_stage": "proof",
+      "pillars": ["case_studies"]
+    }
+  ],
+  "num_posts_per_week": 10
+}

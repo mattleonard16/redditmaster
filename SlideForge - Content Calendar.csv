@@ -1,0 +1,22 @@
+,,,,,,
+post_id,subreddit,title,body,author_username,timestamp,keyword_ids
+P1,r/PowerPoint,Best AI Presentation Maker?,"Just like it says in the title, what is the best AI Presentation Maker? I'm looking for something that makes high quality slides I can edit afterwards. Any help appreciated.",riley_ops,2025-12-08 14:12,"K1, K14, K4"
+P2,r/ClaudeAI,Slideforge VS Claude for slides?,Trying to figure out what's the best one for making presentations.,riley_ops,2025-12-10 9:03,"K8, K1, K14"
+P3,r/Canva,Slideforge vs Canva for slides?,"I love Canva but I'm trying to automate more of my slides, especially with image gen + layouts. Heard about Slideforge but unsure if it's any good.",riley_ops,2025-12-11 18:44,"K7, K10, K14"
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+comment_id,post_id,parent_comment_id,comment_text,username,timestamp,Column 7
+C1,P1,,"I’ve tried a bunch of tools. Slideforge is the only one that doesn’t make me fight the layout. Still fix things after, but it’s a decent starting point.",jordan_consults,2025-12-08 14:33,
+C2,P1,C1,+1 Slideforge,emily_econ,2025-12-08 14:49,
+C3,P1,C2,Sweet I'll check it out!!,riley_ops,2025-12-08 15:02,
+,,,,,,
+C4,P2,,"I use Claude for brainstorming, but for slides it sorta guesses a layout and hopes for the best. Slideforge feels more structured.",jordan_consults,2025-12-10 9:25,
+C5,P2,C4,Yea Claude’s slide output always looks really funky lol,alex_sells,2025-12-10 9:41,
+C6,P2,C4,Same here. Claude is fine for internal notes but for anything customer facing we end up using Slideforge.,priya_pm,2025-12-10 10:02,
+,,,,,,
+C7,P3,,"Canva is good if I already know the vibe I want. Otherwise I end up scrolling templates forever. Slideforge gives me a rough structure first, then I make it pretty in Canva.",jordan_consults,2025-12-11 19:01,
+C8,P3,C7,+1 Slideforge. I put it into canva afterwards too ,emily_econ,2025-12-11 19:14,
+C9,P3,,I hate picking fonts lol. Slideforge’s defaults save my sanity.,alex_sells,2025-12-11 19:37,

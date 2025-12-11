@@ -1,0 +1,134 @@
+{
+  "week_index": 1,
+  "company_id": "slideforge",
+  "actions": [
+    {
+      "id": "e82c33ec-91eb-4756-9d7f-60e86d6deae8",
+      "date": "2025-12-15",
+      "time_slot": "morning",
+      "subreddit_name": "r/startups",
+      "persona_id": "founder_advocate",
+      "post_type": "new_post",
+      "content_idea_id": "98eae776-5347-4d69-b6c1-3cfaeb3a78a5",
+      "quality_score": 10.0,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "8e83bf6e-254d-480c-b18d-6f5a155924c9",
+      "date": "2025-12-15",
+      "time_slot": "afternoon",
+      "subreddit_name": "r/SaaS",
+      "persona_id": "curious_novice",
+      "post_type": "top_comment",
+      "content_idea_id": "5cb5809f-9ddc-4dea-affb-0d3df17ec946",
+      "quality_score": 9.25,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "709dd8c3-3558-4649-abfe-aad2caed2ff9",
+      "date": "2025-12-16",
+      "time_slot": "afternoon",
+      "subreddit_name": "r/startups",
+      "persona_id": "designer_neutral",
+      "post_type": "new_post",
+      "content_idea_id": "b25bf33e-e374-4695-b37d-a1da03fee5c8",
+      "quality_score": 10.0,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "9611a60a-b9dc-4dd2-965b-59bb75f14539",
+      "date": "2025-12-16",
+      "time_slot": "evening",
+      "subreddit_name": "r/venturecapital",
+      "persona_id": "curious_novice",
+      "post_type": "top_comment",
+      "content_idea_id": "b1483828-3770-45ab-997e-6a5081896567",
+      "quality_score": 9.25,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "af59bf4f-fb38-4fa2-8780-60c376fb8a13",
+      "date": "2025-12-17",
+      "time_slot": "morning",
+      "subreddit_name": "r/design",
+      "persona_id": "curious_novice",
+      "post_type": "top_comment",
+      "content_idea_id": "7df4708d-100a-4a0d-a525-bec387f26f3d",
+      "quality_score": 8.75,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "82a49592-f200-4292-9d53-09126ed87b7a",
+      "date": "2025-12-17",
+      "time_slot": "evening",
+      "subreddit_name": "r/Entrepreneur",
+      "persona_id": "founder_advocate",
+      "post_type": "new_post",
+      "content_idea_id": "6157d116-7ffb-4eaf-a498-202feb0b141f",
+      "quality_score": 10.0,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "4b2eafda-852d-4c60-b7b0-4492eeacd638",
+      "date": "2025-12-18",
+      "time_slot": "morning",
+      "subreddit_name": "r/Entrepreneur",
+      "persona_id": "designer_neutral",
+      "post_type": "new_post",
+      "content_idea_id": "f45fdfc2-7e97-4cc9-94fc-9018914779f9",
+      "quality_score": 10.0,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "ce5c452e-41ca-4aa4-9b06-5a7544d20e28",
+      "date": "2025-12-19",
+      "time_slot": "afternoon",
+      "subreddit_name": "r/SaaS",
+      "persona_id": "founder_advocate",
+      "post_type": "top_comment",
+      "content_idea_id": "20577ca1-3f98-408e-8be3-5e223605a0bd",
+      "quality_score": 10.0,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "590d2b75-06ef-4dea-b811-08a9be33dd1c",
+      "date": "2025-12-20",
+      "time_slot": "evening",
+      "subreddit_name": "r/venturecapital",
+      "persona_id": "founder_advocate",
+      "post_type": "top_comment",
+      "content_idea_id": "428908f0-0d3c-4b66-907c-3d982e04ffd8",
+      "quality_score": 10.0,
+      "thread_id": null,
+      "parent_action_id": null
+    },
+    {
+      "id": "5951bf39-37d3-45cd-a669-52b97ba6631d",
+      "date": "2025-12-21",
+      "time_slot": "morning",
+      "subreddit_name": "r/design",
+      "persona_id": "designer_neutral",
+      "post_type": "top_comment",
+      "content_idea_id": "57bfd88e-b7a2-4b76-8086-e0041940e988",
+      "quality_score": 10.0,
+      "thread_id": null,
+      "parent_action_id": null
+    }
+  ],
+  "evaluation": {
+    "overall_score": 9.6,
+    "authenticity_score": 10.0,
+    "diversity_score": 10.0,
+    "cadence_score": 10.0,
+    "alignment_score": 8.0,
+    "warnings": []
+  }
+}

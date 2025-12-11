@@ -1,0 +1,6 @@
+# Reddit Mastermind Planner Dependencies
+# Requires Python 3.9+
+openai>=1.0.0
+pytest>=7.0.0
+python-dotenv>=1.0.0
+streamlit>=1.29.0
