@@ -168,6 +168,19 @@ def parse_company_csv(filepath: str) -> CompanyCSVData:
             if name.upper().startswith("K") and value:
                 keywords[name.upper()] = value
     
+    # Validate required data
+    if len(personas) < 2:
+        raise ValueError(
+            f"Company Info requires at least 2 personas, but only {len(personas)} found. "
+            "Please ensure the CSV has a 'Username' / 'Info' section with at least 2 persona entries."
+        )
+    
+    if len(subreddits) < 1:
+        raise ValueError(
+            "Company Info requires at least 1 subreddit, but none found. "
+            "Please ensure the CSV has a 'Subreddits' field with target subreddits."
+        )
+    
     return CompanyCSVData(
         website=website,
         description=description,

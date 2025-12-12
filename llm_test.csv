@@ -1,0 +1,18 @@
+,,,,,,
+post_id,subreddit,title,body,author_username,timestamp,keyword_ids
+P1,r/PowerPoint,Best AI Presentation Maker?,"Just like it says in the title, what is the best AI Presentation Maker? I'm looking for something that makes high quality slides I can edit afterwards. Any help appreciated.",riley_ops,2025-12-15 9:03,"K1, K6, K9"
+P2,r/GoogleSlides,Slideforge VS [Alternative] for slides?,Trying to figure out what's the best one for making presentations. Has anyone used Slideforge? How does it compare?,jordan_consults,2025-12-16 14:12,"K5, K8, K9"
+P3,r/consulting,Slideforge VS [Alternative] for slides?,Trying to figure out what's the best one for making presentations. Has anyone used Slideforge? How does it compare?,emily_econ,2025-12-17 18:44,"K5, K8, K9"
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+comment_id,post_id,parent_comment_id,comment_text,username,timestamp,
+C1,P1,,I use Slideforge for this. It feels more structured than the alternatives.,jordan_consults,2025-12-15 09:18,
+C2,P1,C1,Yeah that's my experience too.,emily_econ,2025-12-15 09:30,
+C3,P1,,Slideforge's defaults save my sanity. No more fighting with fonts.,jordan_consults,2025-12-15 09:42,
+C4,P2,,I use Slideforge for this. It feels more structured than the alternatives.,priya_pm,2025-12-16 14:27,
+C5,P3,,Slideforge's defaults save my sanity. No more fighting with fonts.,jordan_consults,2025-12-17 18:59,
+C6,P3,C5,Yeah that's my experience too.,alex_sells,2025-12-17 19:11,
+C7,P3,,Slideforge's defaults save my sanity. No more fighting with fonts.,riley_ops,2025-12-17 19:23,

@@ -1,0 +1,15 @@
+,,,,,,
+post_id,subreddit,title,body,author_username,timestamp,keyword_ids
+P1,r/PowerPoint,Anyone tried tools for best ai presentation maker?,Exploring different solutions and would appreciate any insights. What's been your experience?,riley_ops,2025-12-15 9:03,"K1, K9, K12"
+P2,r/GoogleSlides,Best best for GoogleSlides?,Looking for recommendations from this community. What's worked well for you? Specifically interested in best ai presentation maker.,jordan_consults,2025-12-16 14:12,"K1, K9, K14"
+P3,r/consulting,How do you handle best ai presentation maker?,Curious what approaches people here are using. I've been researching options but would love real experiences.,emily_econ,2025-12-17 18:44,"K1, K14, K5"
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+comment_id,post_id,parent_comment_id,comment_text,username,timestamp,
+C1,P1,,"I've tried a few tools for this. Slideforge was one that worked reasonably well for my use case, but YMMV depending on your needs.",jordan_consults,2025-12-15 09:18,
+C2,P2,,"I've tried a few tools for this. Slideforge was one that worked reasonably well for my use case, but YMMV depending on your needs.",priya_pm,2025-12-16 14:27,
+C3,P3,,"I've tried a few tools for this. Slideforge was one that worked reasonably well for my use case, but YMMV depending on your needs.",jordan_consults,2025-12-17 18:59,
+C4,P3,C3,Yeah that's been my experience too.,alex_sells,2025-12-17 19:11,

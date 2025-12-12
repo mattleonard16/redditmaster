@@ -158,21 +158,12 @@ def main():
             st.markdown(f"**Generate Week:** {week_to_generate}")
         
         with gen_col2:
-            # LLM toggle
-            use_llm = st.checkbox(
-                "Premium LLM mode (slower)",
-                value=False,
-                help="Quick mode uses templates only (<1s). Premium adds GPT-4o-mini ideas and may take ~15–25s.",
-            )
+            st.markdown("")  # Spacer
         
         with gen_col3:
             # Generate button
-            if st.button("Generate", type="primary", use_container_width=True):
-                spinner_msg = f"Generating Week {week_to_generate} calendar..."
-                if use_llm:
-                    spinner_msg += " (Premium LLM mode, please wait)"
-                else:
-                    spinner_msg += " (Quick mode)"
+            if st.button("Generate Calendar", type="primary", use_container_width=True):
+                spinner_msg = f"Generating Week {week_to_generate} calendar... (LLM mode, please wait ~15-25s)"
                 with st.spinner(spinner_msg):
                     # Generate calendar
                     with tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False) as out_tmp:
@@ -182,7 +173,7 @@ def main():
                         company_csv=st.session_state['tmp_path'],
                         output_csv=out_path,
                         week_index=week_to_generate,
-                        use_llm=use_llm,
+                        use_llm=True,  # Always use LLM
                         history=st.session_state.get('history_entries', []),
                     )
 
@@ -398,77 +389,9 @@ def main():
                     use_container_width=True,
                 )
         
-        # Generate next week button
+        # Footer
         st.markdown("---")
-        st.markdown("---")
-        st.subheader("Generate Subsequent Weeks")
-        st.caption("The algorithm uses posting history to avoid repeated topics and rotate personas across weeks.")
-        
-        next_week = st.session_state.get('next_week', week + 1)
-        
-        col1, col2, col3 = st.columns([2, 1, 1])
-        with col1:
-            st.markdown(f"**Ready to generate:** Week {next_week}")
-            st.caption("This simulates a cron job that would run weekly.")
-        
-        with col2:
-            use_llm_next = st.checkbox(
-                "Premium LLM mode (slower)",
-                value=False,
-                key="llm_next",
-                help="Quick mode uses templates only (<1s). Premium adds GPT-4o-mini ideas and may take ~15–25s.",
-            )
-        
-        with col3:
-            if st.button(f"Generate Week {next_week}", type="secondary", use_container_width=True):
-                with st.spinner(f"Generating Week {next_week}..."):
-                    with tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False) as out_tmp:
-                        out_path = out_tmp.name
-                    
-                    calendar_data, evaluation = generate_calendar_from_csv(
-                        company_csv=st.session_state['tmp_path'],
-                        output_csv=out_path,
-                        week_index=next_week,
-                        use_llm=use_llm_next,
-                        history=st.session_state.get('history_entries', []),
-                    )
-
-                    # Append to history for subsequent generations
-                    def _infer_pillar_id(title: str) -> str:
-                        t = (title or "").lower()
-                        if any(w in t for w in [" vs ", " versus ", "compare"]):
-                            return "comparisons"
-                        if t.startswith("how") or " how to " in t or "guide" in t:
-                            return "howto"
-                        if any(w in t for w in ["worked", "results", "case study", "what happened"]):
-                            return "case_studies"
-                        if any(w in t for w in ["unpopular", "hot take", "opinion"]):
-                            return "opinions"
-                        return "problems"
-
-                    history_entries = list(st.session_state.get('history_entries', []))
-                    for post in calendar_data.posts:
-                        date_part = post.timestamp.split(" ")[0] if post.timestamp else ""
-                        history_entries.append(
-                            PostingHistoryEntry(
-                                date=date_part,
-                                subreddit_name=post.subreddit,
-                                persona_id=post.author_username,
-                                topic=post.title,
-                                pillar_id=_infer_pillar_id(post.title),
-                                week_index=next_week,
-                                keyword_ids=list(post.keyword_ids or []),
-                            )
-                        )
-                    st.session_state['history_entries'] = history_entries
-                    
-                    # Update session state
-                    st.session_state['calendar_data'] = calendar_data
-                    st.session_state['evaluation'] = evaluation
-                    st.session_state['out_path'] = out_path
-                    st.session_state['week_index'] = next_week
-                    st.session_state['next_week'] = next_week + 1
-                    st.rerun()
+        st.caption("Reddit Mastermind Planner - Generating realistic content calendars")
 
 
 if __name__ == "__main__":
