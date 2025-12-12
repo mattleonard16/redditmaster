@@ -301,7 +301,8 @@ def _convert_to_csv_format(
                 keyword_ids=keyword_ids,
             ))
     
-    # Generate comments for each post (still sequential but fewer calls)
+    # Generate comments for each post
+    # NOTE: Comments use templates only (no LLM) for speed - saves 8+ API calls
     comment_idx = 1
     persona_list = [p.username for p in csv_data.personas] if csv_data.personas else [p.id for p in personas]
     
@@ -314,7 +315,7 @@ def _convert_to_csv_format(
             personas=persona_list,
             csv_data=csv_data,
             start_comment_idx=comment_idx,
-            use_llm=use_llm,
+            use_llm=False,  # Templates only for speed (saves ~40s)
         )
         
         comments.extend(post_comments)
