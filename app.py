@@ -158,11 +158,23 @@ def main():
             st.markdown(f"**Generate Week:** {week_to_generate}")
         
         with gen_col2:
-            st.markdown("")  # Spacer
+            # Show remaining generations
+            gen_count = st.session_state.get('generation_count', 0)
+            remaining = max(0, 3 - gen_count)
+            if remaining > 0:
+                st.caption(f"Generations remaining: {remaining}/3")
+            else:
+                st.warning("Session limit reached")
         
         with gen_col3:
-            # Generate button
-            if st.button("Generate Calendar", type="primary", use_container_width=True):
+            # Generate button - disabled if limit reached
+            gen_count = st.session_state.get('generation_count', 0)
+            button_disabled = gen_count >= 3
+            
+            if st.button("Generate Calendar", type="primary", use_container_width=True, disabled=button_disabled):
+                # Increment counter
+                st.session_state['generation_count'] = gen_count + 1
+                
                 spinner_msg = f"Generating Week {week_to_generate} calendar... (LLM mode, please wait ~15-25s)"
                 with st.spinner(spinner_msg):
                     # Generate calendar

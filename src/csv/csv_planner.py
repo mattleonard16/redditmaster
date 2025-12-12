@@ -255,36 +255,53 @@ def _convert_to_csv_format(
     history = history or []
     recent_topics = [h.topic for h in history[-20:] if h.topic]
 
-    # Generate posts with persona rotation
-    for i, action in enumerate(post_actions):
-        post_id = f"P{i + 1}"
+    # Generate ALL posts in a single batch LLM call (faster than sequential)
+    if use_llm and is_llm_available() and len(post_actions) > 0:
+        batch_posts = _generate_posts_batch(post_actions, csv_data, persona_list, recent_topics)
         
-        # Rotate personas across posts for variety
-        # Each post should have a different author when possible
-        post_author = persona_list[i % len(persona_list)]
-        
-        # Generate title and body
-        title, body = _generate_post_content(
-            action=action,
-            csv_data=csv_data,
-            use_llm=use_llm,
-            recent_topics=recent_topics,
-        )
-        
-        # Extract matching keywords
-        keyword_ids = extract_keywords_for_topic(title + " " + body, csv_data.keywords)
-        
-        posts.append(PlannedPost(
-            post_id=post_id,
-            subreddit=action.subreddit_name,
-            title=title,
-            body=body,
-            author_username=post_author,  # Use rotated persona
-            timestamp=format_timestamp(action.date, action.time_slot),
-            keyword_ids=keyword_ids,
-        ))
+        # Use batch results if successful
+        if batch_posts and len(batch_posts) == len(post_actions):
+            for i, (action, (title, body)) in enumerate(zip(post_actions, batch_posts)):
+                post_id = f"P{i + 1}"
+                post_author = persona_list[i % len(persona_list)]
+                keyword_ids = extract_keywords_for_topic(title + " " + body, csv_data.keywords)
+                
+                posts.append(PlannedPost(
+                    post_id=post_id,
+                    subreddit=action.subreddit_name,
+                    title=title,
+                    body=body,
+                    author_username=post_author,
+                    timestamp=format_timestamp(action.date, action.time_slot),
+                    keyword_ids=keyword_ids,
+                ))
     
-    # Generate comments for each post
+    # Fallback: generate posts individually if batch failed or LLM unavailable
+    if len(posts) == 0:
+        for i, action in enumerate(post_actions):
+            post_id = f"P{i + 1}"
+            post_author = persona_list[i % len(persona_list)]
+            
+            title, body = _generate_post_content(
+                action=action,
+                csv_data=csv_data,
+                use_llm=use_llm,
+                recent_topics=recent_topics,
+            )
+            
+            keyword_ids = extract_keywords_for_topic(title + " " + body, csv_data.keywords)
+            
+            posts.append(PlannedPost(
+                post_id=post_id,
+                subreddit=action.subreddit_name,
+                title=title,
+                body=body,
+                author_username=post_author,
+                timestamp=format_timestamp(action.date, action.time_slot),
+                keyword_ids=keyword_ids,
+            ))
+    
+    # Generate comments for each post (still sequential but fewer calls)
     comment_idx = 1
     persona_list = [p.username for p in csv_data.personas] if csv_data.personas else [p.id for p in personas]
     
@@ -304,6 +321,77 @@ def _convert_to_csv_format(
         comment_idx += len(post_comments)
     
     return CalendarData(posts=posts, comments=comments)
+
+
+def _generate_posts_batch(
+    actions: list,
+    csv_data: CompanyCSVData,
+    persona_list: List[str],
+    recent_topics: List[str],
+) -> List[Tuple[str, str]]:
+    """Generate all posts in a single LLM call for speed.
+    
+    Returns list of (title, body) tuples, one per action.
+    """
+    client = get_openai_client()
+    if not client:
+        return []
+    
+    # Build post specs
+    post_specs = []
+    for i, action in enumerate(actions):
+        persona = persona_list[i % len(persona_list)]
+        post_specs.append(f"Post {i+1}: subreddit={action.subreddit_name}, persona={persona}")
+    
+    posts_list = "\n".join(post_specs)
+    keywords_sample = list(csv_data.keywords.values())[:5]
+    keywords_str = ", ".join(keywords_sample) if keywords_sample else "productivity tools"
+    
+    prompt = f"""Generate {len(actions)} Reddit posts for a B2B SaaS company.
+
+COMPANY: {csv_data.description[:200]}
+KEYWORDS to incorporate: {keywords_str}
+
+POSTS TO GENERATE:
+{posts_list}
+
+RULES:
+- Each post should feel authentic to its subreddit
+- Vary the topics and angles across posts
+- No promotional language or CTAs
+- Titles should be conversational and invite discussion
+- Bodies should be 1-3 sentences with specific context
+
+Return JSON array with exactly {len(actions)} objects:
+[{{"title": "...", "body": "..."}}, ...]
+"""
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=1000,
+            temperature=0.85,
+        )
+        
+        content = response.choices[0].message.content or ""
+        content = content.strip()
+        if content.startswith("```"):
+            content = content.split("```")[1]
+            if content.startswith("json"):
+                content = content[4:]
+            content = content.strip()
+        
+        import json
+        result = json.loads(content)
+        
+        if isinstance(result, list) and len(result) == len(actions):
+            return [(p.get("title", ""), p.get("body", "")) for p in result]
+        
+    except Exception:
+        pass
+    
+    return []
 
 
 def _generate_post_content(
