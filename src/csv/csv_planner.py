@@ -55,6 +55,8 @@ def generate_calendar_from_csv(
     company, personas, subreddits, templates = _convert_to_internal_models(csv_data)
     
     # Step 3: Generate calendar using existing pipeline
+    # NOTE: We pass use_llm=False here because the LLM idea generation is slow
+    # and we'll generate actual post content with LLM in _convert_to_csv_format
     calendar, evaluation = generate_content_calendar(
         company=company,
         personas=personas,
@@ -64,7 +66,7 @@ def generate_calendar_from_csv(
         history=history or [],
         week_index=week_index,
         start_date=start_date,
-        use_llm=use_llm,
+        use_llm=False,  # Skip slow idea generation - content LLM is in _convert_to_csv_format
     )
     
     # Step 4: Convert to posts and comments with LLM-generated content
