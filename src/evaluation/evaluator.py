@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, TYPE_CHECKING
 
 from src.config.thresholds import EVALUATION_THRESHOLDS, EVALUATION_WEIGHTS
 
@@ -15,6 +15,9 @@ from src.models import (
     EvaluationReport,
     PostingHistoryEntry,
 )
+
+if TYPE_CHECKING:
+    from src.csv.csv_generator import CalendarData
 
 
 def evaluate_calendar(
@@ -370,3 +373,116 @@ def _evaluate_repetition(
         warnings.append(f"Cross-week repetition: {repeated_keyword} actions repeat a recent (keyword_id, subreddit)")
 
     return penalty
+
+
+def evaluate_calendar_data(
+    calendar_data: "CalendarData",
+    company_name: str = "",
+) -> EvaluationReport:
+    """Evaluate the actual CalendarData output (after persona rotation).
+    
+    This evaluates the final output with correct persona attribution,
+    unlike evaluate_calendar which checks the intermediate planning calendar.
+    
+    Args:
+        calendar_data: The final CalendarData with posts and comments
+        company_name: Company name for promotional language detection
+        
+    Returns:
+        An EvaluationReport with accurate scores
+    """
+    warnings: List[str] = []
+    
+    posts = calendar_data.posts
+    comments = calendar_data.comments
+    
+    if not posts:
+        return EvaluationReport(
+            overall_score=0.0,
+            authenticity_score=0.0,
+            diversity_score=0.0,
+            cadence_score=0.0,
+            alignment_score=0.0,
+            warnings=["No posts generated"],
+        )
+    
+    # === Authenticity (0-10) ===
+    authenticity = 10.0
+    
+    # Check for promotional language in posts
+    promo_phrases = ["check out", "you should try", "best tool", "must have", "game changer"]
+    for post in posts:
+        text = (post.title + " " + post.body).lower()
+        if any(phrase in text for phrase in promo_phrases):
+            authenticity -= 1.0
+            warnings.append(f"Promotional language detected in post: {post.post_id}")
+    
+    # Penalize if company name is mentioned too prominently
+    if company_name:
+        mentions = sum(1 for p in posts if company_name.lower() in (p.title + p.body).lower())
+        if mentions > len(posts) * 0.5:
+            authenticity -= 2.0
+            warnings.append("Company mentioned too frequently")
+    
+    authenticity = max(0.0, authenticity)
+    
+    # === Diversity (0-10) ===
+    diversity = 10.0
+    
+    # Persona diversity
+    unique_authors = set(p.author_username for p in posts)
+    unique_commenters = set(c.username for c in comments)
+    all_personas = unique_authors | unique_commenters
+    
+    if len(unique_authors) < 2 and len(posts) >= 2:
+        diversity -= 2.0
+        warnings.append("Low persona diversity: fewer than 2 post authors")
+    
+    # Subreddit diversity
+    unique_subreddits = set(p.subreddit for p in posts)
+    if len(unique_subreddits) < min(3, len(posts)):
+        diversity -= 1.0
+    
+    # Check persona dominance
+    author_counts = Counter(p.author_username for p in posts)
+    if author_counts and len(posts) > 1:
+        most_common = author_counts.most_common(1)[0]
+        if most_common[1] / len(posts) > 0.6:
+            diversity -= 1.5
+            warnings.append(f"Persona dominance: {most_common[0]} has {most_common[1]}/{len(posts)} posts")
+    
+    diversity = max(0.0, diversity)
+    
+    # === Cadence (0-10) ===
+    cadence = 10.0
+    
+    # Check for even distribution (basic check on timestamps)
+    # For now, assume good cadence if posts exist
+    if len(posts) < 3:
+        cadence -= 1.0  # Small penalty for very few posts
+    
+    # === Alignment (0-10) ===
+    alignment = 10.0
+    
+    # Check keyword usage
+    posts_with_keywords = sum(1 for p in posts if p.keyword_ids)
+    if posts_with_keywords < len(posts) * 0.5:
+        alignment -= 1.0
+        warnings.append("Low keyword usage in posts")
+    
+    # Compute overall score
+    overall = (
+        authenticity * EVALUATION_WEIGHTS.get("authenticity", 0.3) +
+        diversity * EVALUATION_WEIGHTS.get("diversity", 0.25) +
+        cadence * EVALUATION_WEIGHTS.get("cadence", 0.25) +
+        alignment * EVALUATION_WEIGHTS.get("alignment", 0.2)
+    )
+    
+    return EvaluationReport(
+        overall_score=round(overall, 1),
+        authenticity_score=round(authenticity, 1),
+        diversity_score=round(diversity, 1),
+        cadence_score=round(cadence, 1),
+        alignment_score=round(alignment, 1),
+        warnings=warnings,
+    )

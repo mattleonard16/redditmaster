@@ -10,6 +10,9 @@ venv/
 .env
 .env.*
 
+# Rate limiting data (server-side)
+.rate_limits.json
+
 # Build artifacts
 build/
 dist/

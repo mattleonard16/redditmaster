@@ -8,6 +8,23 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 
+def _sanitize_text(text: str) -> str:
+    """Sanitize text input from CSV to prevent parsing issues.
+    
+    - Removes control characters
+    - Normalizes whitespace
+    - Escapes problematic characters
+    """
+    if not text:
+        return ""
+    # Remove control characters except newlines and tabs
+    text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', text)
+    # Normalize multiple spaces to single space
+    text = re.sub(r' +', ' ', text)
+    # Strip leading/trailing whitespace
+    return text.strip()
+
+
 @dataclass
 class PersonaInfo:
     """Parsed persona information from company CSV."""
@@ -130,8 +147,8 @@ def parse_company_csv(filepath: str) -> CompanyCSVData:
         if len(row) < 2:
             continue
         
-        name = row[0].strip()
-        value = row[1].strip()
+        name = _sanitize_text(row[0])
+        value = _sanitize_text(row[1])
         
         # Skip empty rows
         if not name and not value:

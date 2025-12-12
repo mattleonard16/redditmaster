@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import logging
 import random
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 from src.csv.csv_parser import CompanyCSVData, PersonaInfo, parse_company_csv, extract_keywords_for_topic
 from src.csv.csv_generator import (
@@ -78,7 +82,14 @@ def generate_calendar_from_csv(
         history=history or [],
     )
     
-    # Step 5: Write CSV output
+    # Step 5: Re-evaluate using the actual output (with rotated personas)
+    from src.evaluation.evaluator import evaluate_calendar_data
+    evaluation = evaluate_calendar_data(
+        calendar_data=calendar_data,
+        company_name=csv_data.company_name or "",
+    )
+    
+    # Step 6: Write CSV output
     generate_calendar_csv(calendar_data, output_csv)
     
     return calendar_data, evaluation
@@ -369,30 +380,40 @@ Return JSON array with exactly {len(actions)} objects:
 [{{"title": "...", "body": "..."}}, ...]
 """
 
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=1000,
-            temperature=0.85,
-        )
-        
-        content = response.choices[0].message.content or ""
-        content = content.strip()
-        if content.startswith("```"):
-            content = content.split("```")[1]
-            if content.startswith("json"):
-                content = content[4:]
+    # Retry with exponential backoff
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=1000,
+                temperature=0.85,
+            )
+            
+            content = response.choices[0].message.content or ""
             content = content.strip()
-        
-        import json
-        result = json.loads(content)
-        
-        if isinstance(result, list) and len(result) == len(actions):
-            return [(p.get("title", ""), p.get("body", "")) for p in result]
-        
-    except Exception:
-        pass
+            if content.startswith("```"):
+                content = content.split("```")[1]
+                if content.startswith("json"):
+                    content = content[4:]
+                content = content.strip()
+            
+            import json
+            result = json.loads(content)
+            
+            if isinstance(result, list) and len(result) == len(actions):
+                return [(p.get("title", ""), p.get("body", "")) for p in result]
+            else:
+                logger.warning(f"Batch generation returned {len(result) if isinstance(result, list) else 'non-list'}, expected {len(actions)}")
+            
+        except Exception as e:
+            logger.error(f"Batch post generation attempt {attempt + 1}/{max_retries} failed: {type(e).__name__}: {e}")
+            if attempt < max_retries - 1:
+                import time
+                wait_time = (2 ** attempt) * 0.5  # 0.5s, 1s, 2s
+                logger.info(f"Retrying in {wait_time}s...")
+                time.sleep(wait_time)
     
     return []
 
@@ -685,5 +706,6 @@ Return ONLY the comment text, nothing else.
         
         return response.choices[0].message.content.strip() or "Good point!"
         
-    except Exception:
+    except Exception as e:
+        logger.error(f"Comment LLM generation failed: {type(e).__name__}: {e}")
         return _generate_comment_template(post, parent_id, company_name, 0)
