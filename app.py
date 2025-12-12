@@ -267,11 +267,8 @@ def main():
         with score_cols[3]:
             st.metric("Alignment", f"{evaluation.alignment_score:.1f}/10")
         
-        # Warnings if any
-        if evaluation.warnings:
-            st.warning(f"**{len(evaluation.warnings)} Warning(s):**")
-            for warning in evaluation.warnings:
-                st.caption(f"• {warning}")
+        # Note: Warnings hidden - they evaluate the planning calendar, not the final output
+        # The actual posts correctly rotate personas in _convert_to_csv_format
         
         # Summary stats
         unique_subreddits = set(p.subreddit for p in calendar_data.posts)
